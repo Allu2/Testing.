@@ -1,3 +1,5 @@
+#!/usr/bin/python
+#  -*- coding: utf-8 -*-
 __author__ = 'Aleksi Palomäki'
 import math
 from datetime import datetime
@@ -6,16 +8,6 @@ class LocData:
     def __init__(self, database, user):
         self.db = database
         self.userID = user
-        self.start_date = None
-        self.end_date = None
-    def getFrom(self,date):     # Not implemented, probably will be changed.
-        pass
-
-    def getTill(self, date):    # Not implemented, probably will be changed.
-        pass
-
-    def getAt(self, time):      # Not implemented, probably will be changed.
-        pass
 
     '''
     getInCircle(radius, center_location)
@@ -85,7 +77,7 @@ class LocData:
         end_date = between[1]           # None if till the latest data.
         result_data = None
         corner1 = area[0]               # None if we want to use Circle
-        corner2 = area [1]              # Second corner or radius if area[0] is None
+        corner2 = area[1]               # Second corner or radius if area[0] is None
         center_location = area[2]       # None if we use Rectangle area, center of the circle if we use the Circle area.
         self.readData()                 # Read the database and format it to our use.
         # Determine the type of area.
@@ -149,16 +141,22 @@ class LocData:
         self.db = data
 
 
-'''
-And this is for testing the class and its functions.
-'''
-# File FI.txt is from http://download.geonames.org/export/dump/FI.zip
-data = open("FI.txt",'r', encoding="UTF-8")    # We parse this in readData()
-loc = LocData(data, "1234")
+    '''
+    And this is for testing the class and its functions.
+    '''
+    # File FI.txt is from http://download.geonames.org/export/dump/FI.zip
+    def tests(self):
+        self.db = open("FI.txt",'r', encoding="UTF-8")    # We parse this in readData()
+        between = [datetime(2014, 2, 1),datetime(2015, 3, 1)]
+        area= [[60.852269,0,21.632595],[60.891876,0,21.74263], None]
+        print("Tulokset")
+        hits = self.getData(between, area)
+        for x in hits:
+            print(x)
+        pass
+        return hits
+#Uncomment for testing.
+#loc = LocData("lol", "1372")
+#loc.tests()
 
-between = [datetime(2014, 2, 1),datetime(2015, 3, 1)]
-area= [[60.852269,0,21.632595],[60.891876,0,21.74263], None]
-print("Tulokset")
-hits = loc.getData(between, area)
-for x in hits:
-    print(x)
+
